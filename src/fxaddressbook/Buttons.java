@@ -54,10 +54,10 @@ public class Buttons extends HBox implements EventHandler {
     @Override
     public void handle(Event event) {
         if(event.getSource().equals(savebtn)) {
-//            users.add(new UserData(name, address, phone));
             ui.getUserData();
         }
         else if(event.getSource().equals(closebtn)) {
+            FileUtils.saveToFile("addressbook.data", ui.getAddresses());
             Platform.exit();
         }
     }

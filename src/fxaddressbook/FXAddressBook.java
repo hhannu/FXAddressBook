@@ -7,9 +7,11 @@ package fxaddressbook;
 
 import java.util.ArrayList;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -21,7 +23,10 @@ public class FXAddressBook extends Application {
     public void start(Stage primaryStage) {
         
         BorderPane root = new BorderPane();
-        UI ui = new UI(new ArrayList<>());
+        ArrayList<UserData> list = new ArrayList();
+        FileUtils.loadFromFile("addressbook.data", list);
+        
+        UI ui = new UI(list);
         Buttons buttons = new Buttons(ui);
         root.setCenter(ui);
         root.setBottom(buttons);
@@ -32,6 +37,12 @@ public class FXAddressBook extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                FileUtils.saveToFile("addressbook.data", list);
+            }
+        }); 
+        
     }
 
     /**

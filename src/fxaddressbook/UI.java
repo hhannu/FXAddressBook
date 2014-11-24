@@ -15,24 +15,28 @@ import javafx.scene.control.TabPane;
 public class UI extends TabPane {
     private ArrayList<UserData> users = new ArrayList<UserData>();
     private InputTab itab = new InputTab();    
-    private BrowserTab btab = new BrowserTab();
+    private BrowserTab btab;
     
     public UI(ArrayList<UserData> users) { 
         this.users = users;         
         itab.setText("New Address");
         this.getTabs().add(itab);
+        btab = new BrowserTab(users);
         btab.setText("Browse");
         this.getTabs().add(btab);
-        for(UserData ud : users)
-            btab.addUserData(ud);
     }
     
     public UserData getUserData() {
         if(itab.getFirstName().equals("") || itab.getLastName().equals(""))
             return null;
         UserData ud = new UserData(itab.getFirstName(), itab.getLastName(), itab.getAddress(), itab.getPhone(), itab.getEmail());
-        btab.addUserData(ud);
+        users.add(ud);
+        btab.addUserName(ud.getName());
         itab.clear();
         return ud;
     }
+    
+    public ArrayList<UserData> getAddresses() {
+        return this.users;
+    }            
 }

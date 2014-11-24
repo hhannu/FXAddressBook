@@ -25,17 +25,21 @@ public class BrowserTab extends Tab {
     private ListView lw = new ListView();
     private TextArea data = new TextArea();
     
-    ArrayList<UserData> users = new ArrayList();
+    ArrayList<UserData> users = null;
     ObservableList<String> names = FXCollections.observableArrayList();
     
-    public BrowserTab() {
+    public BrowserTab(ArrayList<UserData> users) {
         data.setMinWidth(200);
         data.setMaxWidth(200);
         data.setEditable(false);
         this.setClosable(false);
         hbox.getChildren().add(lw);
         hbox.getChildren().add(data);
-        this.setContent(hbox);        
+        this.setContent(hbox); 
+        this.users = users;
+        for(UserData ud : users)
+            this.addUserName(ud.getName());
+
         lw.setItems(names);
         lw.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<String>() {
@@ -52,8 +56,7 @@ public class BrowserTab extends Tab {
         });
     }
     
-    public void addUserData(UserData ud) {
-        users.add(ud);
-        names.add(ud.getName());
+    public void addUserName(String name) {
+        names.add(name);
     }
 }
