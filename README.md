@@ -1,0 +1,4 @@
+FXAddressBook
+=============
+
+Ohjelmistokehityskurssin JavaFX-harjoitustyö.
