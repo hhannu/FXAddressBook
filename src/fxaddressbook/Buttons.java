@@ -11,6 +11,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -35,9 +36,11 @@ public class Buttons extends HBox implements EventHandler {
         closebtn.setOnAction(this);     
         savebtn.setText("Save");
         savebtn.setOnAction(this);
+        // Set a listener for tab changes.
         ui.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
             @Override
             public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
+                // Hide save button when browser tab is active.
                 if(ui.getSelectionModel().getSelectedIndex() == 0)
                     savebtn.setVisible(true);
                 else
@@ -46,7 +49,8 @@ public class Buttons extends HBox implements EventHandler {
         });
         
         this.setAlignment(Pos.BASELINE_LEFT);
-        this.setSpacing(10);
+        this.setSpacing(10);        
+        this.setPadding(new Insets(10, 10, 10, 10));
         this.getChildren().add(closebtn);
         this.getChildren().add(savebtn); 
     }
@@ -54,7 +58,7 @@ public class Buttons extends HBox implements EventHandler {
     @Override
     public void handle(Event event) {
         if(event.getSource().equals(savebtn)) {
-            ui.getUserData();
+            ui.getData();
         }
         else if(event.getSource().equals(closebtn)) {
             FileUtils.saveToFile("addressbook.data", ui.getAddresses());

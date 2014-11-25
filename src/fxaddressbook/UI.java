@@ -6,6 +6,7 @@
 package fxaddressbook;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import javafx.scene.control.TabPane;
 
 /**
@@ -13,9 +14,9 @@ import javafx.scene.control.TabPane;
  * @author hth
  */
 public class UI extends TabPane {
-    private ArrayList<UserData> users = new ArrayList<UserData>();
-    private InputTab itab = new InputTab();    
-    private BrowserTab btab;
+    private ArrayList<UserData> users = new ArrayList<>();
+    private final InputTab itab = new InputTab();    
+    private final BrowserTab btab;
     
     public UI(ArrayList<UserData> users) { 
         this.users = users;         
@@ -26,11 +27,17 @@ public class UI extends TabPane {
         this.getTabs().add(btab);
     }
     
-    public UserData getUserData() {
+    /**
+     * Get data from TextFields.
+     * @return UserData object
+     */
+    public UserData getData() {
         if(itab.getFirstName().equals("") || itab.getLastName().equals(""))
             return null;
         UserData ud = new UserData(itab.getFirstName(), itab.getLastName(), itab.getAddress(), itab.getPhone(), itab.getEmail());
         users.add(ud);
+        if(users.size() > 1)
+            Collections.sort(users);
         btab.addUserName(ud.getName());
         itab.clear();
         return ud;

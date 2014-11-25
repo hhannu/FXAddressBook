@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,51 +23,47 @@ public class FileUtils {
     /**
      * Load userdata from a file
      * @param fileName
-     * @param list
-     * @return 
+     * @return List of UserData objects. Empty list if reading fails.
      */
-    public static boolean loadFromFile(String fileName, ArrayList list) {
+    public static ArrayList<UserData> loadFromFile(String fileName) {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         File file = new File(fileName);
+        ArrayList<UserData> list = new ArrayList();
         
         if(!file.exists()) {
             System.err.println("File " + fileName + " not found.");
-            return false;
+            return list;
         }
         try {
             fis = new FileInputStream(file);        
         } catch (FileNotFoundException ex) {
             System.err.println("Failed to open " + fileName);
             System.err.println(ex.getMessage());
-            return false;
+            return list;
         }
         
         try {
             ois = new ObjectInputStream(fis);
-        
-            while(fis.available() > 0) {
-                list.add((UserData)ois.readObject());
-            }
+            list = (ArrayList<UserData>)ois.readObject();
             ois.close();
         } catch (Exception ex) {
             System.err.println("Failed to read from " + fileName);
             System.err.println(ex.getMessage());
-            return false;
+            return list;
         }
-        return true;
+        return list;
     }
     
     /**
-     * Save userdata to a file
+     * Save a list of userdata objects to a file
      * @param fileName
      * @param list
-     * @return 
+     * @return True if the writing succeeds, otherwise false.
      */
     public static boolean saveToFile(String fileName, ArrayList<UserData> list) {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
-        int n = 0;
         
         try {
             fos = new FileOutputStream(fileName);        
@@ -81,18 +75,13 @@ public class FileUtils {
         
         try {
             oos = new ObjectOutputStream(fos);
-        
-            for(UserData ud : list) {
-                oos.writeObject(ud);
-                n++;
-            }  
+            oos.writeObject(list);
             oos.close();
         } catch (IOException ex) {
             System.err.println("Failed to write to " + fileName);
             System.err.println(ex.getMessage());
             return false;
         }
-        System.out.println("Wrote " + n + " items to " + fileName);
         return true;
     }
 }

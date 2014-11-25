@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author hth
  */
-public class UserData implements Serializable {
+public class UserData implements Serializable, Comparable {
     
     private String firstName, lastName, address, phone, email;
     
@@ -24,7 +24,8 @@ public class UserData implements Serializable {
     }
 
     public String getName() {
-        return firstName + " " + lastName;
+        String name = firstName + " " + lastName;
+        return name.trim();
     }
     
     public String getFirstName() {
@@ -65,6 +66,18 @@ public class UserData implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * Compares the names of userdata objects.
+     * This allows to sort a list of userdatas by name.
+     * @param o
+     * @return 
+     */
+    @Override
+    public int compareTo(Object o) {
+        UserData ud = (UserData)o;
+        return this.getName().compareTo(ud.getName());
     }
     
 }
